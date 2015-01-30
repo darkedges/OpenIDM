@@ -1,0 +1,71 @@
+{
+    "objects" : [
+        {
+            "onDelete" : {
+                "type" : "text/javascript",
+                "file" : "ui/onDelete-user-cleanup.js"
+            },
+            "onCreate" : {
+                "type" : "text/javascript",
+                "file" : "ui/onCreate-user-set-default-fields.js"
+            },
+            "properties" : [
+                {
+                    "encryption" : {
+                        "key" : "openidm-sym-default"
+                    },
+                    "name" : "securityAnswer",
+                    "scope" : "private"
+                },
+                {
+                    "encryption" : {
+                        "key" : "openidm-sym-default"
+                    },
+                    "name" : "password",
+                    "scope" : "private"
+                },
+                {
+                    "type" : "virtual",
+                    "onRetrieve" : {
+                        "type" : "text/javascript",
+                        "rolesPropName" : "roles",
+                        "file" : "roles/effectiveRoles.js"
+                    },
+                    "name" : "effectiveRoles"
+                },
+                {
+                    "type" : "virtual",
+                    "onRetrieve" : {
+                        "type" : "text/javascript",
+                        "effectiveRolesPropName" : "effectiveRoles",
+                        "file" : "roles/effectiveAssignments.js"
+                    },
+                    "name" : "effectiveAssignments"
+                }
+            ],
+            "name" : "user"
+        },
+        {
+            "postUpdate" : {
+                "type" : "text/javascript",
+                "file" : "roles/update-users-of-role.js"
+            },
+            "postCreate" : {
+                "type" : "text/javascript",
+                "file" : "roles/update-users-of-role.js"
+            },
+            "onDelete" : {
+                "type" : "text/javascript",
+                "file" : "roles/onDelete-roles.js"
+            },
+            "postDelete" : {
+                "type" : "text/javascript",
+                "file" : "roles/update-users-of-role.js"
+            },
+            "name" : "role"
+        },
+        {
+            "name" : "group"
+        }
+    ]
+}
