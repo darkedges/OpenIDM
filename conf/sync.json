@@ -1,236 +1,263 @@
 {
+    "_id" : "sync",
     "mappings" : [
         {
-            "name" : "systemLdapAccounts_managedUser",
-            "source" : "system/ldap/account",
             "target" : "managed/user",
             "properties" : [
                 {
-                    "source" : "cn",
-                    "target" : "displayName"
+                    "target" : "displayName",
+                    "source" : "cn"
                 },
                 {
-                    "source" : "description",
-                    "target" : "description"
+                    "target" : "description",
+                    "source" : "description"
                 },
                 {
-                    "source" : "givenName",
-                    "target" : "givenName"
+                    "target" : "givenName",
+                    "source" : "givenName"
                 },
                 {
-                    "source" : "mail",
-                    "target" : "mail"
+                    "target" : "mail",
+                    "source" : "mail"
                 },
                 {
-                    "source" : "telephoneNumber",
-                    "target" : "telephoneNumber"
+                    "target" : "telephoneNumber",
+                    "source" : "telephoneNumber"
                 },
                 {
-                    "source" : "sn",
-                    "target" : "sn"
+                    "target" : "sn",
+                    "source" : "sn"
                 },
                 {
-                    "source" : "uid",
-                    "target" : "userName"
+                    "target" : "userName",
+                    "source" : "uid"
                 },
                 {
-                    "source" : "ldapGroups",
-                    "target" : "ldapGroups"
+                    "target" : "ldapGroups",
+                    "source" : "ldapGroups"
                 }
             ],
+            "source" : "system/ldap/account",
             "policies" : [
                 {
-                    "situation" : "CONFIRMED",
-                    "action" : "UPDATE"
+                    "action" : "UPDATE",
+                    "situation" : "CONFIRMED"
                 },
                 {
-                    "situation" : "FOUND",
-                    "action" : "UPDATE"
+                    "action" : "UPDATE",
+                    "situation" : "FOUND"
                 },
                 {
-                    "situation" : "ABSENT",
-                    "action" : "CREATE"
+                    "action" : "CREATE",
+                    "situation" : "ABSENT"
                 },
                 {
-                    "situation" : "AMBIGUOUS",
-                    "action" : "EXCEPTION"
+                    "action" : "EXCEPTION",
+                    "situation" : "AMBIGUOUS"
                 },
                 {
-                    "situation" : "MISSING",
-                    "action" : "CREATE"
+                    "action" : "CREATE",
+                    "situation" : "MISSING"
                 },
                 {
-                    "situation" : "SOURCE_MISSING",
-                    "action" : "DELETE"
+                    "action" : "DELETE",
+                    "situation" : "SOURCE_MISSING"
                 },
                 {
-                    "situation" : "UNQUALIFIED",
-                    "action" : "IGNORE"
+                    "action" : "IGNORE",
+                    "situation" : "UNQUALIFIED"
                 },
                 {
-                    "situation" : "UNASSIGNED",
-                    "action" : "IGNORE"
+                    "action" : "IGNORE",
+                    "situation" : "UNASSIGNED"
                 }
-            ]
+            ],
+            "name" : "systemLdapAccounts_managedUser"
         },
         {
-            "name" : "managedUser_systemLdapAccounts",
+            "assignmentsToMap" : [
+                "ldap"
+            ],
+            "sourceCondition" : {
+                "effectiveAssignments" : "ldap"
+            },
             "source" : "managed/user",
+            "onCreate" : {
+                "type" : "text/javascript",
+                "source" : "target.dn = 'uid=' + source.userName + ',ou=people,dc=darkedges,dc=com';"
+            },
+            "name" : "managedUser_systemLdapAccounts",
             "target" : "system/ldap/account",
             "links" : "systemLdapAccounts_managedUser",
             "properties" : [
                 {
-                    "source" : "givenName",
-                    "target" : "givenName"
+                    "target" : "givenName",
+                    "source" : "givenName"
                 },
                 {
-                    "source" : "sn",
-                    "target" : "sn"
+                    "target" : "sn",
+                    "source" : "sn"
                 },
                 {
+                    "target" : "cn",
                     "source" : "",
                     "transform" : {
                         "type" : "text/javascript",
                         "source" : "source.displayName || (source.givenName + ' ' + source.sn);"
-                    },
-                    "target" : "cn"
+                    }
                 },
                 {
-                    "source" : "userName",
-                    "target" : "uid"
+                    "target" : "uid",
+                    "source" : "userName"
                 },
                 {
-                    "source" : "description",
                     "target" : "description",
+                    "source" : "description",
                     "condition" : {
                         "type" : "text/javascript",
                         "source" : "!!object.description"
                     }
                 },
                 {
-                    "source" : "mail",
-                    "target" : "mail"
+                    "target" : "mail",
+                    "source" : "mail"
                 },
                 {
-                    "source" : "password",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "object.password != null"
-                    },
+                    "target" : "userPassword",
                     "transform" : {
                         "type" : "text/javascript",
                         "source" : "openidm.decrypt(source);"
                     },
-                    "target" : "userPassword"
+                    "source" : "password",
+                    "condition" : {
+                        "type" : "text/javascript",
+                        "source" : "object.password != null"
+                    }
                 },
                 {
-                    "source" : "telephoneNumber",
                     "target" : "telephoneNumber",
+                    "source" : "telephoneNumber",
                     "condition" : {
                         "type" : "text/javascript",
                         "source" : "!!object.telephoneNumber"
                     }
                 },
                 {
-                    "source" : "ldapGroups",
-                    "target" : "ldapGroups"
+                    "target" : "ldapGroups",
+                    "source" : "ldapGroups"
                 }
             ],
-            "onCreate" : {
-                "type" : "text/javascript",
-                "source" : "target.dn = 'uid=' + source.userName + ',ou=people,dc=darkedges,dc=com';"
-            },
             "policies" : [
                 {
-                    "situation" : "CONFIRMED",
-                    "action" : "UPDATE"
+                    "action" : "CREATE",
+                    "situation" : "ABSENT"
                 },
                 {
-                    "situation" : "FOUND",
-                    "action" : "LINK"
+                    "action" : "IGNORE",
+                    "situation" : "ALL_GONE"
                 },
                 {
-                    "situation" : "ABSENT",
-                    "action" : "CREATE"
+                    "action" : "IGNORE",
+                    "situation" : "AMBIGUOUS"
                 },
                 {
-                    "situation" : "AMBIGUOUS",
-                    "action" : "IGNORE"
+                    "action" : "UPDATE",
+                    "situation" : "CONFIRMED"
                 },
                 {
-                    "situation" : "MISSING",
-                    "action" : "IGNORE"
+                    "action" : "LINK",
+                    "situation" : "FOUND"
                 },
                 {
-                    "situation" : "SOURCE_MISSING",
-                    "action" : "DELETE"
+                    "action" : "EXCEPTION",
+                    "situation" : "FOUND_ALREADY_LINKED"
                 },
                 {
-                    "situation" : "UNQUALIFIED",
-                    "action" : "IGNORE"
+                    "action" : "EXCEPTION",
+                    "situation" : "LINK_ONLY"
                 },
                 {
-                    "situation" : "UNASSIGNED",
-                    "action" : "IGNORE"
+                    "action" : "IGNORE",
+                    "situation" : "MISSING"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "SOURCE_IGNORED"
+                },
+                {
+                    "action" : "DELETE",
+                    "situation" : "SOURCE_MISSING"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "TARGET_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "UNASSIGNED"
+                },
+                {
+                    "action" : "DELETE",
+                    "situation" : "UNQUALIFIED"
                 }
             ]
         },
         {
-            "name" : "systemLdapGroups_managedGroup",
-            "source" : "system/ldap/group",
             "target" : "managed/group",
             "properties" : [
                 {
-                    "source" : "dn",
-                    "target" : "dn"
+                    "target" : "dn",
+                    "source" : "dn"
                 },
                 {
-                    "source" : "description",
-                    "target" : "description"
+                    "target" : "description",
+                    "source" : "description"
                 },
                 {
-                    "source" : "uniqueMember",
-                    "target" : "uniqueMember"
+                    "target" : "uniqueMember",
+                    "source" : "uniqueMember"
                 },
                 {
-                    "source" : "cn",
-                    "target" : "name"
+                    "target" : "name",
+                    "source" : "cn"
                 }
             ],
+            "source" : "system/ldap/group",
             "policies" : [
                 {
-                    "situation" : "CONFIRMED",
-                    "action" : "UPDATE"
+                    "action" : "UPDATE",
+                    "situation" : "CONFIRMED"
                 },
                 {
-                    "situation" : "FOUND",
-                    "action" : "UPDATE"
+                    "action" : "UPDATE",
+                    "situation" : "FOUND"
                 },
                 {
-                    "situation" : "ABSENT",
-                    "action" : "CREATE"
+                    "action" : "CREATE",
+                    "situation" : "ABSENT"
                 },
                 {
-                    "situation" : "AMBIGUOUS",
-                    "action" : "EXCEPTION"
+                    "action" : "EXCEPTION",
+                    "situation" : "AMBIGUOUS"
                 },
                 {
-                    "situation" : "MISSING",
-                    "action" : "UNLINK"
+                    "action" : "UNLINK",
+                    "situation" : "MISSING"
                 },
                 {
-                    "situation" : "SOURCE_MISSING",
-                    "action" : "EXCEPTION"
+                    "action" : "EXCEPTION",
+                    "situation" : "SOURCE_MISSING"
                 },
                 {
-                    "situation" : "UNQUALIFIED",
-                    "action" : "IGNORE"
+                    "action" : "IGNORE",
+                    "situation" : "UNQUALIFIED"
                 },
                 {
-                    "situation" : "UNASSIGNED",
-                    "action" : "IGNORE"
+                    "action" : "IGNORE",
+                    "situation" : "UNASSIGNED"
                 }
-            ]
+            ],
+            "name" : "systemLdapGroups_managedGroup"
         }
     ]
 }
