@@ -1,5 +1,4 @@
 {
-    "_id" : "sync",
     "mappings" : [
         {
             "target" : "managed/user",
@@ -35,6 +34,10 @@
                 {
                     "target" : "ldapGroups",
                     "source" : "ldapGroups"
+                },
+                {
+                    "target" : "employeeType",
+                    "source" : "employeeType"
                 }
             ],
             "source" : "system/ldap/account",
@@ -145,6 +148,10 @@
                 {
                     "target" : "ldapGroups",
                     "source" : "ldapGroups"
+                },
+                {
+                    "target" : "employeeType",
+                    "source" : "employeeType"
                 }
             ],
             "policies" : [

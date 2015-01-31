@@ -16,6 +16,11 @@
                         "propertyType" : "string"
                     },
                     {
+                        "propertyName" : "employeeType",
+                        "indexType" : "unique",
+                        "propertyType" : "string"
+                    },
+                    {
                         "propertyName" : "givenName",
                         "indexType" : "notunique",
                         "propertyType" : "string"

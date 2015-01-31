@@ -167,6 +167,12 @@
                     "nativeName" : "uid",
                     "nativeType" : "string"
                 },
+                "employeeType" : {
+                    "type" : "string",
+                    "required" : false,
+                    "nativeName" : "employeeType",
+                    "nativeType" : "string"
+                },
                 "mail" : {
                     "type" : "string",
                     "required" : false,
